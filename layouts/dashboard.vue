@@ -9,8 +9,15 @@
         </v-toolbar-title>
 
         <v-spacer />
-        <v-btn to="/dashboard" text depressed color="primary" class=" rounded-tr-lg rounded-bl-lg text-capitalize ">
-          Francis Zeb
+        <v-btn
+          to="/dashboard"
+          text
+          depressed
+          color="primary"
+          class=" rounded-tr-lg rounded-bl-lg text-capitalize "
+          @click="logout"
+        >
+          Logout
         </v-btn>
       </v-app-bar>
     </div>
@@ -26,7 +33,7 @@
     <v-footer color="grey lighten-2" class="d-flex justify-center">
       <div style="margin:10px">
         <div class="text-overline">
-          Copyright © 2019 Universal Crypto Trade. All Rights Reserved.
+          Copyright © InksUser 2020. All Rights Reserved.
         </div>
       </div>
     </v-footer>
@@ -38,7 +45,15 @@
 export default {
   data: () => ({
 
-  })
+  }),
+  created () {
+    this.$store.dispatch('authentication/handleAuthStateChanged')
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('authentication/logoutUser')
+    }
+  }
 
 }
 </script>

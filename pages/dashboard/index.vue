@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="isLogin">
     <v-btn v-if="!show" text @click="show = true">
       <v-icon fab color="primary" class=" mr-2">
         mdi-arrow-left-circle
@@ -46,13 +46,13 @@
                 All users
               </v-tab>
               <v-tab @click="type = 'verified'">
-                Verified users
+                Not Verified
               </v-tab>
               <v-tab @click="type = 'activated'">
-                Activated users
+                Not Activated
               </v-tab>
               <v-tab @click="type = 'paid'">
-                Paid users
+                Not Paid
               </v-tab>
             </v-tabs>
           </v-card>
@@ -250,7 +250,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({ allUsers: 'authentication/getUsers' }),
+    ...mapGetters({ allUsers: 'authentication/getUsers', isLogin: 'authentication/getLogin' }),
     users () {
       return this.allUsers(this.type)
     }

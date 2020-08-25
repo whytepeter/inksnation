@@ -1,5 +1,5 @@
 
-import { db } from '@/services/firebase'
+import { db, auth } from '@/services/firebase'
 
 export const state = () => ({
   login: false,
@@ -35,6 +35,9 @@ export const getters = {
   },
   getAlert (state) {
     return state.alert
+  },
+  getLogin (state) {
+    return state.login
   }
 }
 
@@ -47,6 +50,9 @@ export const mutations = {
   },
   setAlert (state, alert) {
     state.alert = alert
+  },
+  setLogin (state, login) {
+    state.login = login
   }
 
 }
@@ -71,7 +77,7 @@ export const actions = {
       commit('setUsers', { type: 'all', data: all })
     })
 
-    db.collection('users').where('verified', '==', true).onSnapshot((snapshot) => {
+    db.collection('users').where('verified', '==', false).onSnapshot((snapshot) => {
       const verified = []
       const data = snapshot.docs
       data.forEach((el) => {
@@ -80,7 +86,7 @@ export const actions = {
       commit('setUsers', { type: 'verified', data: verified })
     })
 
-    db.collection('users').where('activated', '==', true).onSnapshot((snapshot) => {
+    db.collection('users').where('activated', '==', false).onSnapshot((snapshot) => {
       const activated = []
       const data = snapshot.docs
       data.forEach((el) => {
@@ -89,7 +95,7 @@ export const actions = {
       commit('setUsers', { type: 'activated', data: activated })
     })
 
-    db.collection('users').where('paid', '==', true).onSnapshot((snapshot) => {
+    db.collection('users').where('paid', '==', false).onSnapshot((snapshot) => {
       const paid = []
       const data = snapshot.docs
       data.forEach((el) => {
@@ -136,5 +142,40 @@ export const actions = {
             console.log(err.message)
           })
       })
+  },
+  loginUser ({ commit, dispatch }, user) {
+    // start the loading
+    commit('setLoading', { type: 'login', is: true })
+    // Login the User
+    auth
+      .signInWithEmailAndPassword(user.email, user.password).then(() => {
+        commit('setLogin', true)
+        this.$router.push('/dashboard')
+      })
+      .catch((error) => {
+        dispatch('initAlert', { is: true, type: 'error', message: error.message })
+        commit('setLoading', { type: 'login', is: false })
+      })
+  },
+
+  logoutUser ({ commit }) {
+    auth.signOut().then(() => {
+      location.href = '/login'
+      commit('setLogin', false)
+    }).catch((error) => {
+      console.log(error.message)
+    })
+  },
+
+  handleAuthStateChanged ({ commit, dispatch, state }) {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        commit('setLogin', true)
+        this.$router.push('/dashboard')
+      } else {
+        location.href = '/login'
+        commit('setLogin', false)
+      }
+    })
   }
 }

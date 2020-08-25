@@ -1,14 +1,12 @@
 <template>
   <v-row v-if="user" justify="center">
-    <v-col v-if="alert.is" cols="12" md="6" :class="[alert.is ? 'animate__animated animate__fadeInDown' : 'animate__animated animate__fadeOutUp' ]">
-      <v-alert
-        :type="alert.type"
-        border="top"
-        dark
-      >
-        {{ alert.message }}
-      </v-alert>
-    </v-col>
+    <v-snackbar
+
+      v-model="alert.is"
+      :color="alert.type"
+    >
+      {{ alert.message }}
+    </v-snackbar>
     <v-col cols="12">
       <v-card flat color="transparent" width="400" class="mx-auto">
         <v-card-title class="text-uppercase justify-center">
