@@ -10,7 +10,14 @@
           EXCHANGER FRANCIS ZEBULUN
         </div>
         <div cols="12" class="text-center mt-6">
-          <v-btn icon text color="white" class="animate__animated animate__pulse animate__infinite animate__slow">
+          <v-btn
+            target="_blank"
+            href="https://chat.whatsapp.com/DxV4z4O7BvQ0bpkCFoeuG0"
+            icon
+            text
+            color="white"
+            class="animate__animated animate__pulse animate__infinite animate__slow"
+          >
             <v-icon large class="mx-2">
               mdi-whatsapp
             </v-icon>
