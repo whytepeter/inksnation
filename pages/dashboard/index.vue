@@ -63,8 +63,8 @@
           <v-card outlined>
             <v-card-text class="">
               <div class="text-subtitle-2">
-                <div class="text-capitalize text-h6 ">
-                  {{ user.username }}
+                <div class="text-capitalize text-sutitle-1 d-flex align-center justify-space-between ">
+                  <strong>Username</strong><span class="text-h6">{{ user.username }}</span>
                 </div>
                 <div class="d-flex justify-space-between">
                   <strong> Email:</strong> {{ user.email }}
@@ -76,7 +76,7 @@
                   <strong>Pin:</strong> {{ user.pin }}
                 </div>
               </div>
-              <div class="d-flex align-center justify-space-between">
+              <div class="d-flex align-center justify-end">
                 <div>
                   <v-chip
                     small
@@ -127,8 +127,8 @@
             <v-card-text class="">
               <div>search</div>
               <div class="text-subtitle-2">
-                <div class="text-capitalize text-h6 ">
-                  {{ user.username }}
+                <div class="text-capitalize text-sutitle-1 d-flex align-center justify-space-between ">
+                  <strong>Username</strong><span class="text-h6">{{ user.username }}</span>
                 </div>
                 <div class="d-flex justify-space-between">
                   <strong> Email:</strong> {{ user.email }}
@@ -140,7 +140,7 @@
                   <strong>Pin:</strong> {{ user.pin }}
                 </div>
               </div>
-              <div class="d-flex align-center justify-space-between">
+              <div class="d-flex align-center justify-end">
                 <div>
                   <v-chip
                     small
@@ -271,7 +271,7 @@ export default {
 
       if (this.searchText !== '') {
         this.allUsers('all').forEach((user) => {
-          if (user.username.includes(this.searchText)) {
+          if (user.username.toLowerCase().includes(this.searchText.toLowerCase())) {
             console.log(searchResult)
             console.log(this.searchText)
             searchResult.push(user)
