@@ -1,5 +1,12 @@
 <template>
   <v-container v-if="isLogin">
+    <v-snackbar
+
+      v-model="alert.is"
+      :color="alert.type"
+    >
+      {{ alert.message }}
+    </v-snackbar>
     <v-btn v-if="!show" text @click="show = true">
       <v-icon fab color="primary" class=" mr-2">
         mdi-arrow-left-circle
@@ -110,7 +117,7 @@
                     <v-list-item @click="edit(i)">
                       <v-list-item-title>Edit</v-list-item-title>
                     </v-list-item>
-                    <v-list-item @click="deleteUser(i)">
+                    <v-list-item @click="confirm(i)">
                       <v-list-item-title>Delete</v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -175,7 +182,7 @@
                     <v-list-item @click="edit(i)">
                       <v-list-item-title>Edit</v-list-item-title>
                     </v-list-item>
-                    <v-list-item @click="deleteUser(i)">
+                    <v-list-item @click="confirm(i)">
                       <v-list-item-title>Delete</v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -197,6 +204,34 @@
           <span>{{ searchError }}</span>
         </v-col>
       </v-row>
+      <v-dialog v-model="confirmDelete" persistent width="300">
+        <v-card>
+          <v-card-title
+            primary-title
+          >
+            Confirm
+          </v-card-title>
+
+          <v-divider />
+          <v-card-text>
+            <span class="text-subtitle-1 mb-4">Are you sure?</span>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn depressed outlined color="secondary" class="mr-2" @click="confirmDelete = false">
+              Cancel
+            </v-btn>
+            <v-btn
+
+              depressed
+              color="error"
+              @click="deleteUser"
+            >
+              Delete
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
     <div v-if="!show">
       <keep-alive>
@@ -207,7 +242,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import addUser from '../../components/addUser'
 import editUser from '../../components/editUser'
 
@@ -221,6 +256,8 @@ export default {
   },
   data: () => ({
     editProp: null,
+    confirmDelete: false,
+    deleteThisUser: '',
     component: '',
     searchText: '',
     show: true,
@@ -250,7 +287,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({ allUsers: 'authentication/getUsers', isLogin: 'authentication/getLogin' }),
+    ...mapGetters({ allUsers: 'authentication/getUsers', isLogin: 'authentication/getLogin', alert: 'authentication/getAlert' }),
     users () {
       return this.allUsers(this.type)
     }
@@ -259,6 +296,7 @@ export default {
     this.$store.dispatch('authentication/initUser')
   },
   methods: {
+    ...mapActions({ deleting: 'authentication/deleteUser' }),
     getColor (status) {
       if (status) {
         return 'primary'
@@ -291,6 +329,15 @@ export default {
       this.editProp = selected
       this.show = false
       this.component = 'edit-user'
+    },
+    deleteUser (index) {
+      const username = this.deleteThisUser.username
+      this.deleting(username)
+      this.confirmDelete = false
+    },
+    confirm (index) {
+      this.deleteThisUser = this.allUsers('all').[index]
+      this.confirmDelete = true
     }
 
   }

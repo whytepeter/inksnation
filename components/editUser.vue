@@ -190,14 +190,14 @@ export default {
       }
       if (this.user.verified) {
         verified = true
-        valueA = 0
+        valueV = 0
       } else {
-        activated = false
+        verified = false
         valueV = 1
       }
       if (this.user.paid) {
         paid = true
-        valueA = 0
+        valueP = 0
       } else {
         paid = false
         valueP = 1

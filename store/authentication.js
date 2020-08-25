@@ -131,18 +131,36 @@ export const actions = {
   },
 
   editUser ({ commit, dispatch }, user) {
-    // commit('setLoading', { type: 'edit', is: true })
+    commit('setLoading', { type: 'edit', is: true })
     db.collection('users').where('username', '==', user.username).get()
       .then((doc) => {
         const id = doc.docs[0].id
-        db.collection('user').doc(id).get()
-          .then((doc) => {
-            console.log(doc)
+
+        db.collection('users').doc(id).update(user)
+          .then(() => {
+            commit('setLoading', { type: 'edit', is: false })
+            dispatch('initAlert', { is: true, type: 'success', message: 'User updated successfully' })
           }).catch((err) => {
-            console.log(err.message)
+            commit('setLoading', { type: 'edit', is: false })
+            dispatch('initAlert', { is: true, type: 'error', message: err.message })
           })
       })
   },
+
+  deleteUser ({ commit, dispatch }, username) {
+    db.collection('users').where('username', '==', username).get()
+      .then((doc) => {
+        const id = doc.docs[0].id
+
+        db.collection('users').doc(id).delete()
+          .then(() => {
+            dispatch('initAlert', { is: true, type: 'success', message: `${username} deleted successfully` })
+          }).catch((err) => {
+            dispatch('initAlert', { is: true, type: 'error', message: err.message })
+          })
+      })
+  },
+
   loginUser ({ commit, dispatch }, user) {
     // start the loading
     commit('setLoading', { type: 'login', is: true })
