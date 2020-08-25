@@ -13,7 +13,6 @@
           <v-btn
             target="_blank"
             href="https://chat.whatsapp.com/DxV4z4O7BvQ0bpkCFoeuG0"
-            icon
             text
             color="white"
             class="animate__animated animate__pulse animate__infinite animate__slow"
