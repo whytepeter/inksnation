@@ -83,6 +83,14 @@
               </v-col>
               <v-col cols="12" class="d-flex align-center justify-space-around">
                 <v-checkbox
+                  v-model="newUser.registered"
+                  color="primary"
+                  class="py-0 my-0"
+                  type="checkbox"
+                  :value="newUser.valueR"
+                  label="Registered"
+                />
+                <v-checkbox
                   v-model="newUser.activated"
                   color="primary"
                   class="py-0 my-0"
@@ -179,7 +187,7 @@ export default {
   computed: {
     ...mapGetters({ loading: 'authentication/getLoading', alert: 'authentication/getAlert' }),
     newUser () {
-      let activated, verified, paid, valueA, valueV, valueP
+      let activated, verified, paid, registered, valueA, valueV, valueP, valueR
 
       if (this.user.activated) {
         activated = true
@@ -202,6 +210,13 @@ export default {
         paid = false
         valueP = 1
       }
+      if (this.user.registered) {
+        registered = true
+        valueR = 0
+      } else {
+        registered = false
+        valueR = 1
+      }
 
       return {
         username: `${this.user.username}`,
@@ -212,9 +227,11 @@ export default {
         activated,
         verified,
         paid,
+        registered,
         valueA,
         valueV,
-        valueP
+        valueP,
+        valueR
       }
     }
   },
@@ -231,7 +248,8 @@ export default {
           phone: this.newUser.phone,
           activated: this.newUser.activated,
           verified: this.newUser.verified,
-          paid: this.newUser.paid
+          paid: this.newUser.paid,
+          registered: this.newUser.registered
 
         }
         this.edit(user)

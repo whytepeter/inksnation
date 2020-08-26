@@ -17,6 +17,7 @@ export const state = () => ({
   },
 
   all: null,
+  registered: null,
   verified: null,
   activated: null,
   paid: null
@@ -103,6 +104,15 @@ export const actions = {
       })
       commit('setUsers', { type: 'paid', data: paid })
     })
+
+    db.collection('users').where('registered', '==', true).onSnapshot((snapshot) => {
+      const registered = []
+      const data = snapshot.docs
+      data.forEach((el) => {
+        registered.push(el.data())
+      })
+      commit('setUsers', { type: 'registered', data: registered })
+    })
   },
 
   addUser ({ commit, dispatch }, user) {
@@ -151,7 +161,6 @@ export const actions = {
     db.collection('users').where('username', '==', username).get()
       .then((doc) => {
         const id = doc.docs[0].id
-
         db.collection('users').doc(id).delete()
           .then(() => {
             dispatch('initAlert', { is: true, type: 'success', message: `${username} deleted successfully` })

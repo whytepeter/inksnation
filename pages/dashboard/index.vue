@@ -52,6 +52,9 @@
               <v-tab @click="type = 'all'">
                 All users
               </v-tab>
+              <v-tab @click="type = 'registered'">
+                Registered
+              </v-tab>
               <v-tab @click="type = 'verified'">
                 Not Verified
               </v-tab>
@@ -86,18 +89,26 @@
               <div class="d-flex align-center justify-end">
                 <div>
                   <v-chip
-                    small
+                    x-small
                     class="ma-1"
                     :color=" getColor(user.activated)"
                   >
                     {{ user.activated ? 'Activated' : 'Not Activated' }}
                   </v-chip>
                   <v-chip
-                    small
+                    x-small
                     class="ma-1"
                     :color=" getColor(user.verified)"
                   >
                     {{ user.verified ? 'Verified' : 'Not Verified' }}
+                  </v-chip>
+                  <v-chip
+
+                    x-small
+                    class="ma-1"
+                    :color=" getColor(user.registered)"
+                  >
+                    {{ user.registered ? 'Registered' : 'Not Registered' }}
                   </v-chip>
                 </div>
                 <v-menu bottom left>
@@ -162,6 +173,14 @@
                     :color="getColor(user.verified)"
                   >
                     {{ user.verified ? 'Verified' : 'Not Verified' }}
+                  </v-chip>
+                  <v-chip
+
+                    x-small
+                    class="ma-1"
+                    :color=" getColor(user.registered)"
+                  >
+                    {{ user.registered ? 'Registered' : 'Not Registered' }}
                   </v-chip>
                 </div>
 

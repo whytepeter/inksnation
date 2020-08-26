@@ -83,6 +83,14 @@
               </v-col>
               <v-col cols="12" class="d-flex align-center justify-space-around">
                 <v-checkbox
+                  v-model="registered"
+                  color="primary"
+                  class="py-0 my-0"
+                  type="checkbox"
+                  value="1"
+                  label="Registered"
+                />
+                <v-checkbox
                   v-model="activated"
                   color="primary"
                   class="py-0 my-0"
@@ -160,7 +168,8 @@ export default {
 
     activated: false,
     verified: false,
-    paid: false
+    paid: false,
+    registered: false
 
   }),
 
@@ -180,7 +189,8 @@ export default {
           phone: this.phone,
           activated: this.activated === '1',
           verified: this.verified === '1',
-          paid: this.paid === '1'
+          paid: this.paid === '1',
+          registered: this.registered === '1'
         }
         this.add(user)
       }
